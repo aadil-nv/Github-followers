@@ -1,15 +1,23 @@
 export enum UserRole {
-  Admin = "admin",
-  User = "user",
-  Manager = "manager"
+  User = 'USER',
+  Admin = 'ADMIN',
 }
 
 export interface IUserEntity {
   id: string;
-  email: string;
+  username: string;
   name: string;
-  password: string;
+  email?: string;
+  password?: string;
+  blog?: string;
+  location?: string;
+  bio?: string;
+  public_repos?: number;
+  public_gists?: number;
+  followers?: number;
+  following?: number;
+  createdAt: Date;
+  updatedAt: Date;
   role: UserRole;
-  createdAt?: Date;
-  updatedAt?: Date;
+  deletedAt?: Date | null;
 }

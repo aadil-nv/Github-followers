@@ -1,53 +1,60 @@
-import { injectable } from 'inversify';
 import { IUserRepository } from './interfaces/user.repository.interface';
-import { IUserEntity, UserRole } from '../interfaces/user.interface';
+import { IUserEntity } from '../interfaces/user.interface';
 import { CreateUserDTO } from '../dtos/create-user.dto';
-import { v4 as uuidv4 } from 'uuid';
 import { UpdateUserDTO } from '../dtos/update-user.dto';
+import { User } from '../models/user.model';
 
-
-
-@injectable()
 export class UserRepository implements IUserRepository {
-  private users: IUserEntity[] = [];
+  // Save a new user
+  async save(dto: CreateUserDTO): Promise<IUserEntity> {
+    // Trim username to remove whitespace/newline issues
+    const username = dto.username?.trim();
 
-  async create(data: CreateUserDTO): Promise<IUserEntity> {
-    const newUser: IUserEntity = {
-      id: uuidv4(),
-      email: data.email,
-      name: data.name,
-      password: data.password, 
-      role: data.role || UserRole.User,
-      createdAt: new Date(),
-      updatedAt: new Date(),
-    };
-    this.users.push(newUser);
-    return newUser;
+    if (!username) throw new Error('Username is required');
+
+    const [user] = await User.findOrCreate({
+      where: { username },
+      defaults: { ...dto }, // UUID is auto-generated in model
+    });
+
+    return user.get() as IUserEntity;
   }
 
-  async update(id: string, data: UpdateUserDTO): Promise<IUserEntity | null> {
-    const user = this.users.find(u => u.id === id);
+  // Update existing user by username
+  async update(username: string, dto: UpdateUserDTO): Promise<IUserEntity | null> {
+    const trimmedUsername = username.trim();
+    const user = await User.findOne({ where: { username: trimmedUsername, isDeleted: false } });
     if (!user) return null;
-    Object.assign(user, data, { updatedAt: new Date() });
-    return user;
+
+    await user.update(dto);
+    return user.get() as IUserEntity;
   }
 
-  async delete(id: string): Promise<boolean> {
-    const index = this.users.findIndex(u => u.id === id);
-    if (index === -1) return false;
-    this.users.splice(index, 1);
+  // Soft delete a user
+  async softDelete(username: string): Promise<boolean> {
+    const trimmedUsername = username.trim();
+    const user = await User.findOne({ where: { username: trimmedUsername, isDeleted: false } });
+    if (!user) return false;
+
+    await user.update({ isDeleted: true });
     return true;
   }
 
-  async findById(id: string): Promise<IUserEntity | null> {
-    return this.users.find(u => u.id === id) || null;
+  // Find a user by username
+  async findByUsername(username: string): Promise<IUserEntity | null> {
+    const trimmedUsername = username.trim();
+    const user = await User.findOne({ where: { username: trimmedUsername, isDeleted: false } });
+    return user ? (user.get() as IUserEntity) : null;
   }
 
-  async findByEmail(email: string): Promise<IUserEntity | null> {
-    return this.users.find(u => u.email === email) || null;
-  }
-
-  async findAll(): Promise<IUserEntity[]> {
-    return this.users;
+  // Find all users with optional filters and sorting
+  async findAll(filters?: any, sortBy?: string): Promise<IUserEntity[]> {
+    console.log("Finding all users with filters:", filters, "and sortBy:", sortBy);
+    
+    const users = await User.findAll({
+      where: { ...filters, isDeleted: false },
+      order: sortBy ? [[sortBy, 'DESC']] : undefined,
+    });
+    return users.map(u => u.get() as IUserEntity);
   }
 }

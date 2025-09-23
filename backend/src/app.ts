@@ -13,7 +13,6 @@ import rootRoute from './routes/root.route';
 import healthRoute from './routes/health.route';
 import userRoute from './routes/user.routes';
 import { HttpStatusCode } from './constants/http-status-code.enum';
-import authRoute from './routes/auth.route';
 import responseTimeLogger from "./middlewares/responseTime.logger";
 
 
@@ -50,7 +49,6 @@ export function createApp(): Application {
   app.use('/', rootRoute);
   app.use('/health', healthRoute);
   app.use('/users', userRoute);
-  app.use('/auth', authRoute);
 
 
 

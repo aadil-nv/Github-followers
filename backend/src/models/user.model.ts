@@ -1,21 +1,37 @@
-import mongoose, { Schema, Document } from 'mongoose';
-import { IUserEntity, UserRole } from '../interfaces/user.interface';
+import { Table, Column, Model, DataType, PrimaryKey, Default } from 'sequelize-typescript';
 
-export interface IUserDocument extends Omit<IUserEntity, 'id'>, Document {
-  role: UserRole;
+@Table({ tableName: 'users', timestamps: true })
+export class User extends Model {
+  @PrimaryKey
+  @Default(DataType.UUIDV4) // auto-generate UUID
+  @Column({ type: DataType.UUID })
+  id!: string;
+
+  @Column({ type: DataType.STRING })
+  username!: string;
+
+  @Column({ type: DataType.STRING })
+  location?: string;
+
+  @Column({ type: DataType.STRING })
+  blog?: string;
+
+  @Column({ type: DataType.STRING })
+  bio?: string;
+
+  @Column({ type: DataType.INTEGER, defaultValue: 0 })
+  public_repos!: number;
+
+  @Column({ type: DataType.INTEGER, defaultValue: 0 })
+  public_gists!: number;
+
+  @Column({ type: DataType.INTEGER, defaultValue: 0 })
+  followers!: number;
+
+  @Column({ type: DataType.INTEGER, defaultValue: 0 })
+  following!: number;
+
+  @Default(false)
+  @Column(DataType.BOOLEAN)
+  isDeleted!: boolean;
 }
-
-const UserSchema = new Schema<IUserDocument>(
-  {
-    email: { type: String, required: true, unique: true },
-    password: { type: String, required: true },
-    role: {
-      type: String as unknown as typeof String, 
-      enum: Object.values(UserRole),
-      default: UserRole.User
-    }
-  },
-  { timestamps: true }
-);
-
-export const UserModel = mongoose.model<IUserDocument>('User', UserSchema);

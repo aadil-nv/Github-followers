@@ -1,15 +1,14 @@
 import 'reflect-metadata';
 import { config } from './config/env';
 import createApp from './app';
-import { connectMongo } from './config/db';
-import { connectRedis } from './config/redis';
+import { syncDatabase } from './config/sync';
 import { logger } from './config/logger';
 import { AddressInfo } from 'net';
+import 'colors';
 
 async function start(): Promise<void> {
   try {
-    await connectMongo();
-    await connectRedis();
+    await syncDatabase();
 
     const app = createApp();
 

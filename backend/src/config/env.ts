@@ -6,8 +6,6 @@ dotenv.config({ path: path.resolve(process.cwd(), '.env') });
 export interface EnvConfig {
   NODE_ENV: 'development' | 'production' | 'test';
   PORT: number;
-  MONGO_URI: string;
-  REDIS_URL: string;
   JWT_SECRET: string;
   RATE_LIMIT_WINDOW_MS: number;
   RATE_LIMIT_MAX: number;
@@ -16,7 +14,15 @@ export interface EnvConfig {
   ACCESS_TOKEN_EXPIRY: string;
   REFRESH_TOKEN_EXPIRY: string;
   ACCESS_TOKEN_MAX_AGE: string;     
-  REFRESH_TOKEN_MAX_AGE : string;  
+  REFRESH_TOKEN_MAX_AGE : string;
+  DB_DIALECT?: string;
+  DB_HOST?: string;
+  DB_PORT?: number;
+  DB_NAME?: string;
+  DB_USERNAME?: string;
+  DB_PASSWORD?: string;
+  DB_LOGGING?: boolean;
+
 }
 
 function parseNumber(value: string | undefined, name: string): number {
@@ -30,8 +36,6 @@ function getEnv(): EnvConfig {
   const {
     NODE_ENV,
     PORT,
-    MONGO_URI,
-    REDIS_URL,
     JWT_SECRET,
     RATE_LIMIT_WINDOW_MS,
     RATE_LIMIT_MAX,
@@ -40,12 +44,17 @@ function getEnv(): EnvConfig {
     ACCESS_TOKEN_EXPIRY,
     REFRESH_TOKEN_EXPIRY,
     ACCESS_TOKEN_MAX_AGE,
-    REFRESH_TOKEN_MAX_AGE
+    REFRESH_TOKEN_MAX_AGE,
+    DB_DIALECT,
+    DB_HOST,
+    DB_PORT,
+    DB_NAME,
+    DB_USERNAME,
+    DB_PASSWORD,
+    DB_LOGGING
   } = process.env;
 
   if (!NODE_ENV) throw new Error('NODE_ENV is required');
-  if (!MONGO_URI) throw new Error('MONGO_URI is required');
-  if (!REDIS_URL) throw new Error('REDIS_URL is required');
   if (!JWT_SECRET) throw new Error('JWT_SECRET is required');
   if (!RATE_LIMIT_WINDOW_MS) throw new Error('RATE_LIMIT_WINDOW_MS is required');
   if (!RATE_LIMIT_MAX) throw new Error('RATE_LIMIT_MAX is required');
@@ -56,14 +65,19 @@ function getEnv(): EnvConfig {
   if (!REFRESH_TOKEN_EXPIRY) throw new Error('REFRESH_TOKEN_EXPIRY is required');
   if (!ACCESS_TOKEN_MAX_AGE) throw new Error('ACCESS_TOKEN_MAX_AGE is required');
   if (!REFRESH_TOKEN_MAX_AGE) throw new Error('REFRESH_TOKEN_MAX_AGE is required');
+  if (!DB_DIALECT) throw new Error('DB_DIALECT is required');
+  if (!DB_HOST) throw new Error('DB_HOST is required');
+  if (!DB_PORT) throw new Error('DB_PORT is required');
+  if (!DB_NAME) throw new Error('DB_NAME is required');
+  if (!DB_USERNAME) throw new Error('DB_USERNAME is required');
+  if (!DB_PASSWORD) throw new Error('DB_PASSWORD is required');
+  if (!DB_LOGGING) throw new Error('DB_LOGGING is required');
 
 
 
   return {
     NODE_ENV: NODE_ENV === 'production' ? 'production' : NODE_ENV === 'test' ? 'test' : 'development',
     PORT: parseNumber(PORT, 'PORT'),
-    MONGO_URI,
-    REDIS_URL,
     JWT_SECRET,
     RATE_LIMIT_WINDOW_MS: parseNumber(RATE_LIMIT_WINDOW_MS ?? '60000', 'RATE_LIMIT_WINDOW_MS'),
     RATE_LIMIT_MAX: parseNumber(RATE_LIMIT_MAX ?? '1000', 'RATE_LIMIT_MAX'),
@@ -72,7 +86,14 @@ function getEnv(): EnvConfig {
     ACCESS_TOKEN_EXPIRY,
     REFRESH_TOKEN_EXPIRY,
     ACCESS_TOKEN_MAX_AGE,
-    REFRESH_TOKEN_MAX_AGE
+    REFRESH_TOKEN_MAX_AGE,
+    DB_DIALECT,
+    DB_HOST,
+    DB_PORT: parseNumber(DB_PORT, 'DB_PORT'),
+    DB_NAME,
+    DB_USERNAME,
+    DB_PASSWORD,
+    DB_LOGGING: DB_LOGGING.toLowerCase() === 'true'
 
   };
 }

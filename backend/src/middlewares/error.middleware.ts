@@ -15,7 +15,7 @@ export function errorHandler(err: ApiError, req: Request, res: Response, _next: 
   const status = err.status ?? HttpStatusCode.INTERNAL_SERVER_ERROR;
   const payload = {
     message: err.message || 'Internal Server Error',
-    ...(process.env.NODE_ENV !== 'production' ? { stack: err.stack, details: err.details } : {}),
+    ...(process.env.NODE_ENV !== 'production' ? {  details: err.details } : {}),
   };
   logger.error({ err, url: req.url, method: req.method }, 'Unhandled error');
   res.status(status).json(payload);

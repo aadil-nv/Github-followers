@@ -1,10 +1,10 @@
-import { inject, injectable } from 'inversify';
-import { CreateUserDTO } from '../dtos/create-user.dto';
-import { UpdateUserDTO } from '../dtos/update-user.dto';
-import jwt from 'jsonwebtoken';
 import { IUserService } from './interfaces/user.service.interface';
 import { IUserRepository } from '../repositories/interfaces/user.repository.interface';
+import { injectable, inject } from 'inversify';
+import { CreateUserDTO } from '../dtos/create-user.dto';
+import { UpdateUserDTO } from '../dtos/update-user.dto';
 import { IUserEntity } from '../interfaces/user.interface';
+import axios from 'axios';
 
 @injectable()
 export class UserService implements IUserService {
@@ -12,32 +12,39 @@ export class UserService implements IUserService {
     @inject('IUserRepository') private repository: IUserRepository
   ) {}
 
-  async createUser(dto: CreateUserDTO): Promise<IUserEntity> {
-    return this.repository.create(dto);
+  async saveOrUpdateUser(username: string): Promise<IUserEntity> {
+    // Check if user exists in DB
+    let user = await this.repository.findByUsername(username);
+    if (user) return user;
+
+    // Fetch from GitHub API
+    const { data } = await axios.get(`https://api.github.com/users/${username}`);
+    const dto: CreateUserDTO = {
+      username: data.login,
+      blog: data.blog,
+      location: data.location,
+      bio: data.bio,
+      public_repos: data.public_repos,
+      public_gists: data.public_gists,
+      followers: data.followers,
+      following: data.following,
+    };
+    return this.repository.save(dto);
   }
 
-  async updateUser(id: string, dto: UpdateUserDTO): Promise<IUserEntity | null> {
-    return this.repository.update(id, dto);
+  async updateUser(username: string, dto: UpdateUserDTO): Promise<IUserEntity | null> {
+    return this.repository.update(username, dto);
   }
 
-  async deleteUser(id: string): Promise<boolean> {
-    return this.repository.delete(id);
+  async softDeleteUser(username: string): Promise<boolean> {
+    return this.repository.softDelete(username);
   }
 
-  async getUserById(id: string): Promise<IUserEntity | null> {
-    return this.repository.findById(id);
+  async getAllUsers(sortBy?: string): Promise<IUserEntity[]> {
+    return this.repository.findAll({}, sortBy);
   }
 
-  async getAllUsers(): Promise<IUserEntity[]> {
-    return this.repository.findAll();
-  }
-
-  async login(email: string, password: string): Promise<{ accessToken: string; user: IUserEntity }> {
-    const user = await this.repository.findByEmail(email);
-    if (!user || user.password !== password) {
-      throw new Error('Invalid credentials');
-    }
-    const token = jwt.sign({ id: user.id, role: user.role }, 'change_this_secret', { expiresIn: '1h' });
-    return { accessToken: token, user };
+  async searchUsers(filters: any): Promise<IUserEntity[]> {
+    return this.repository.findAll(filters);
   }
 }

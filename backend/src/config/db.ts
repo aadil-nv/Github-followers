@@ -1,13 +1,17 @@
-import mongoose from 'mongoose';
-import { config } from './env';
-import { logger } from './logger';
+import { Sequelize } from "sequelize-typescript";
+import { User } from "../models/user.model";
+import dotenv from "dotenv";
+import { config } from "./env";
 
-export async function connectMongo(): Promise<void> {
-  try {
-    await mongoose.connect(config.MONGO_URI);
-    logger.info('MongoDB connected');
-  } catch (err) {
-    logger.error({ err }, 'MongoDB connection error');
-    throw err;
-  }
-}
+dotenv.config(); // load .env
+
+export const sequelize = new Sequelize({
+  database: config.DB_NAME,
+  dialect: config.DB_DIALECT as any, // cast for TS
+  username: config.DB_USERNAME,
+  password: config.DB_PASSWORD,
+  host: config.DB_HOST,
+  port: Number(config.DB_PORT),
+  logging: config.DB_LOGGING,
+  models: [User],
+});
