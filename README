@@ -1,0 +1,30 @@
+# GitHub Backend Assignment
+
+A backend service built with **Node.js**, **Express**, and **TypeScript** following the **Repository Pattern**.  
+This app integrates with the GitHub API and provides APIs for saving users, finding friends (mutual followers), searching, updating, deleting, and sorting user data.  
+
+---
+
+## 🚀 Features
+- Save GitHub user details to database (avoid duplicate API calls)  
+- Find mutual followers (friends)  
+- Search users by username, location, etc.  
+- Soft delete user records  
+- Update user profile fields (bio, blog, location, etc.)  
+- List users sorted by followers, repos, etc.  
+- Input validation & error handling  
+- Repository-based architecture  
+- Unit & Integration tests with Jest  
+
+---
+
+## 🛠️ Tech Stack
+- **Node.js** + **Express**  
+- **TypeScript**  
+- **TypeORM / SQLite** (or your chosen DB)  
+- **Axios** (for GitHub API calls)  
+- **Jest** + **Supertest** (testing)  
+
+---
+
+## 📂 Project Structure

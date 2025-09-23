@@ -1,0 +1,23 @@
+openapi: 3.1.0
+info:
+  title: LedgerLink API
+  description: API documentation for the LedgerLink backend.
+  version: 1.0.0
+servers:
+  - url: http://localhost:5000
+paths:
+  /health:
+    get:
+      summary: Health Check
+      description: Returns the API health status.
+      responses:
+        '200':
+          description: Successful health check
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: ok
