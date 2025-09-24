@@ -5,6 +5,7 @@ import { CreateUserDTO } from '../dtos/create-user.dto';
 import { UpdateUserDTO } from '../dtos/update-user.dto';
 import { IUserEntity } from '../interfaces/user.interface';
 import axios from 'axios';
+import { MutualFriend } from '../dtos/user-response.dto';
 
 @injectable()
 export class UserService implements IUserService {
@@ -36,19 +37,28 @@ export class UserService implements IUserService {
   return this.repository.findByUsername(username);
 }
 
-async findMutualFriends(username: string): Promise<string[]> {
-    // Fetch followers
-    const followersRes = await axios.get(`https://api.github.com/users/${username}/followers`);
-    const followers = followersRes.data.map((f: any) => f.login);
+ async  findMutualFriends(username: string): Promise<MutualFriend[]> {
+  // Fetch followers
+  const followersRes = await axios.get<{ login: string; avatar_url: string }[]>(`${process.env.GITHUB_API_URL}/users/${username}/followers`);
+  const followers = followersRes.data;
 
-    // Fetch following
-    const followingRes = await axios.get(`https://api.github.com/users/${username}/following`);
-    const following = followingRes.data.map((f: any) => f.login);
+  // Fetch following
+  const followingRes = await axios.get<{ login: string; avatar_url: string }[]>(`${process.env.GITHUB_API_URL}/users/${username}/following`);
+  const following = followingRes.data;
 
-    // Mutual = intersection
-    const mutual = followers.filter((f: string) => following.includes(f));
-    return mutual;
-  }
+  // Find mutuals
+  const mutual: MutualFriend[] = followers
+    .filter(f => following.some(fw => fw.login === f.login))
+    .map(f => ({
+      login: f.login,
+      username: f.login,
+      avatar_url: f.avatar_url,
+    }));
+
+    
+
+  return mutual;
+}
 
 
 }

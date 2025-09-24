@@ -47,6 +47,7 @@ interface ReadmeContent {
   encoding: string;
 }
 const userCache = new Map<string, { user: User; repos: Repo[]; followers: Follower[]; timestamp: number }>();
+const GITHUB_API_URL = import.meta.env.VITE_GITHUB_API_URL
 
 export default function ReposPage(): React.ReactElement {
   const { username, reponame } = useParams<{ username: string; reponame: string }>();
@@ -69,7 +70,7 @@ export default function ReposPage(): React.ReactElement {
       
       console.log(`Fetching repo details for: ${username}/${repoName}`);
       
-      const repoUrl = `https://api.github.com/repos/${username}/${repoName}`;
+      const repoUrl = `${GITHUB_API_URL}/repos/${username}/${repoName}`;
       const response = await axios.get<GitHubRepo>(repoUrl);
       
       console.log("Repository data:", response.data);
@@ -98,7 +99,7 @@ export default function ReposPage(): React.ReactElement {
     try {
       setLoadingReadme(true);
       
-      const readmeUrl = `https://api.github.com/repos/${owner}/${repoName}/readme`;
+      const readmeUrl = `${GITHUB_API_URL}/repos/${owner}/${repoName}/readme`;
       const response = await axios.get<ReadmeContent>(readmeUrl);
       
       // Decode base64 content
@@ -141,11 +142,8 @@ export default function ReposPage(): React.ReactElement {
   };
 
   const handleHome = useCallback((): void => {
-      // Clear all Redux data
       dispatch(clearAll());
-      // Clear in-memory cache
       userCache.clear();
-      // Navigate to home
       navigate('/');
     }, [dispatch, navigate]);
 

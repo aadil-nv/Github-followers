@@ -86,13 +86,13 @@ export class UserController implements IUserController {
   }
 }
 
-async findMutualFriends(req: Request, res: Response, next: NextFunction): Promise<void> {
-  console.log("calling mutual friends==========>");
-  
+async findMutualFriends(req: Request, res: Response, next: NextFunction): Promise<void> {  
     try {
       const username = req.params.username;
       const mutual = await this.service.findMutualFriends(username);
-      res.json({ username, mutualFriends: mutual });
+          console.log("Mutual friends found:", mutual);
+
+      res.json({  mutual });
     } catch (err) {
       next(err);
     }

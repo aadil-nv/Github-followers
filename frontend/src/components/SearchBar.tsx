@@ -1,8 +1,11 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { setUser, setRepos } from "../features/githubSlice";
 import { fetchUserFromDB, saveUserToDB, fetchUserFromGitHub } from "../api/userApi";
+
+
+
 
 export default function SearchBar() {
   const [username, setUsername] = useState("");

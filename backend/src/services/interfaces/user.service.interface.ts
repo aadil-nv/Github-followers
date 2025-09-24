@@ -1,6 +1,7 @@
 import { IUserEntity } from '../../interfaces/user.interface';
 import { CreateUserDTO } from '../../dtos/create-user.dto';
 import { UpdateUserDTO } from '../../dtos/update-user.dto';
+import { MutualFriend } from '../../dtos/user-response.dto';
 
 export interface IUserService {
   saveUser(dto:IUserEntity): Promise<IUserEntity>;
@@ -11,5 +12,5 @@ export interface IUserService {
 
   findByUsername(username: string): Promise<IUserEntity | null>;
 
-   findMutualFriends(username: string): Promise<string[]>; 
+   findMutualFriends(username: string): Promise<MutualFriend[]>;
 }

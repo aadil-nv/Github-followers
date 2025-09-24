@@ -8,3 +8,9 @@ export class UserResponseDTO {
   accessToken?: string;
   refreshToken?: string;
 }
+
+export interface MutualFriend {
+  username: string;
+  avatar_url: string;
+  login: string;
+}

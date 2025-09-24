@@ -92,4 +92,8 @@ export interface FormErrors {
   location?: string;
   general?: string;
 }
-
+export interface MutualFriend {
+  login: string;
+  avatar_url: string;
+  username?: string;
+}

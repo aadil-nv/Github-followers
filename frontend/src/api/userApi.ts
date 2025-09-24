@@ -2,8 +2,8 @@ import axios from "axios";
 import type { Repo } from "../features/types";
 import type {  User } from "../features/user.types";
 
-const BACKEND_URL = "http://localhost:5000";
-const GITHUB_API_URL = "https://api.github.com";
+const BACKEND_URL = import.meta.env.VITE_BACKEND_URL
+const GITHUB_API_URL = import.meta.env.VITE_GITHUB_API_URL
 
 export async function fetchUserFromDB(username: string) {
   return axios.get(`${BACKEND_URL}/users/name/${username}`);
