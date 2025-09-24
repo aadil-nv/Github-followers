@@ -11,5 +11,8 @@ export class CreateUserDTO {
   public_gists?: number
   followers?: number;
   following?: number;
-  
+  followers_url?: string;
+  following_url?: string;
+  avatar_url?: string;
+  repos_url?: string;
 }

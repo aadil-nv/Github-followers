@@ -12,23 +12,8 @@ export class UserService implements IUserService {
     @inject('IUserRepository') private repository: IUserRepository
   ) {}
 
-  async saveOrUpdateUser(username: string): Promise<IUserEntity> {
-    // Check if user exists in DB
-    let user = await this.repository.findByUsername(username);
-    if (user) return user;
-
-    // Fetch from GitHub API
-    const { data } = await axios.get(`https://api.github.com/users/${username}`);
-    const dto: CreateUserDTO = {
-      username: data.login,
-      blog: data.blog,
-      location: data.location,
-      bio: data.bio,
-      public_repos: data.public_repos,
-      public_gists: data.public_gists,
-      followers: data.followers,
-      following: data.following,
-    };
+  async saveUser(dto: IUserEntity): Promise<IUserEntity> {
+    // Directly save the whole DTO
     return this.repository.save(dto);
   }
 
@@ -47,4 +32,8 @@ export class UserService implements IUserService {
   async searchUsers(filters: any): Promise<IUserEntity[]> {
     return this.repository.findAll(filters);
   }
+  async findByUsername(username: string): Promise<IUserEntity | null> {
+  return this.repository.findByUsername(username);
+}
+
 }

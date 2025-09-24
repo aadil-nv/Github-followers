@@ -19,6 +19,18 @@ export class User extends Model {
   @Column({ type: DataType.STRING })
   bio?: string;
 
+  @Column({ type: DataType.STRING })
+  avatar_url?: string; // avatar URL
+
+  @Column({ type: DataType.STRING })
+  followers_url?: string; // followers link
+
+  @Column({ type: DataType.STRING })
+  following_url?: string; // following link
+
+  @Column({ type: DataType.STRING })
+  repos_url?: string; // ✅ added repos_url
+
   @Column({ type: DataType.INTEGER, defaultValue: 0 })
   public_repos!: number;
 
@@ -26,10 +38,10 @@ export class User extends Model {
   public_gists!: number;
 
   @Column({ type: DataType.INTEGER, defaultValue: 0 })
-  followers!: number;
+  followers!: number; // follower count
 
   @Column({ type: DataType.INTEGER, defaultValue: 0 })
-  following!: number;
+  following!: number; // following count
 
   @Default(false)
   @Column(DataType.BOOLEAN)

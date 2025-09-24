@@ -7,18 +7,17 @@ import { IUserService } from '../services/interfaces/user.service.interface';
 export class UserController implements IUserController {
   constructor(@inject('IUserService') private service: IUserService) {}
 
-  async save(req: Request, res: Response, next: NextFunction): Promise<void> {
+  async saveUser(req: Request, res: Response, next: NextFunction): Promise<void> {
+    console.log("save user is calling =========>",req.body);
     
-    try {
-      const username = req.body.username?.trim();
-      console.log("Username received:", username);
-      
-      const user = await this.service.saveOrUpdateUser(username);
-      res.json(user);
-    } catch (err) {
-      next(err);
-    }
+  try {
+    const dto = req.body; 
+    const user = await this.service.saveUser(dto);
+    res.status(201).json(user);
+  } catch (err) {
+    next(err);
   }
+}
 
   async update(req: Request, res: Response, next: NextFunction): Promise<void> {
     try {
@@ -50,24 +49,21 @@ export class UserController implements IUserController {
   }
 
   async search(req: Request, res: Response, next: NextFunction): Promise<void> {
-    console.log("Search method called================>>>>>>>>>>>>>>>>>>>>");
+    console.log("search is calling =========>",req.query);
     
     try {
       const filters = req.query;
-      console.log("Search filters received:", filters);
-      
+
       const users = await this.service.searchUsers(filters);
+      console.log("Users found:", users);
+      
       res.json(users);
     } catch (err) {
-      console.log("Error in search method:", err);
-      
       next(err);
     }
   }
 
   async getAll(req: Request, res: Response, next: NextFunction): Promise<void> {
-    console.log("GetAll method called================>>>>>>>>>>>>>>>>>>>>");
-    
     try {
       const sortBy = req.query.sortBy as string;
       const users = await this.service.getAllUsers(sortBy);
@@ -76,4 +72,24 @@ export class UserController implements IUserController {
       next(err);
     }
   }
+  async getUser(req: Request, res: Response, next: NextFunction): Promise<void> {
+  try {
+    const name = req.params.name?.trim();
+    if (!name) {
+      res.status(400).json({ message: 'Username is required' });
+      return;
+    }
+
+    const user = await this.service.findByUsername(name); // new service method
+    if (!user) {
+      res.status(404).json({ message: 'User not found' });
+      return;
+    }
+
+    res.json(user);
+  } catch (err) {
+    next(err);
+  }
+}
+
 }

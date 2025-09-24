@@ -6,17 +6,12 @@ import { User } from '../models/user.model';
 
 export class UserRepository implements IUserRepository {
   // Save a new user
-  async save(dto: CreateUserDTO): Promise<IUserEntity> {
-    // Trim username to remove whitespace/newline issues
-    const username = dto.username?.trim();
-
-    if (!username) throw new Error('Username is required');
-
+  async save(dto: IUserEntity): Promise<IUserEntity> {
+    // Directly save the entire object
     const [user] = await User.findOrCreate({
-      where: { username },
-      defaults: { ...dto }, // UUID is auto-generated in model
+      where: { username: dto.username },
+      defaults: { ...dto }, // save all fields
     });
-
     return user.get() as IUserEntity;
   }
 

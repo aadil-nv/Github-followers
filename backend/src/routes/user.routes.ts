@@ -6,8 +6,10 @@ const userRouter = Router();
 const controller = container.get<IUserController>('IUserController');
 
 
-userRouter.get('/search', controller.search.bind(controller));
-userRouter.get('/:username', controller.save.bind(controller));
+userRouter.get('/search/:search', controller.search.bind(controller));
+userRouter.get('/name/:name', controller.getUser.bind(controller));
+
+userRouter.post('/', controller.saveUser.bind(controller));
 
 userRouter.put('/:username', controller.update.bind(controller));
 

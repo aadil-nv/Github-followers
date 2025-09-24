@@ -6,7 +6,6 @@ export enum UserRole {
 export interface IUserEntity {
   id: string;
   username: string;
-  name: string;
   email?: string;
   password?: string;
   blog?: string;
@@ -16,8 +15,12 @@ export interface IUserEntity {
   public_gists?: number;
   followers?: number;
   following?: number;
+  followers_url?: string;
+  following_url?: string;
+  avatar_url?: string;
+
+  isDeleted: boolean;
   createdAt: Date;
   updatedAt: Date;
-  role: UserRole;
   deletedAt?: Date | null;
 }

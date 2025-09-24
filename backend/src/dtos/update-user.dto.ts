@@ -11,5 +11,8 @@ export class UpdateUserDTO {
   public_gists?: number;
   followers?: number;
   following?: number;
-  role?: UserRole;
+  followers_url?: string;
+  following_url?: string;
+  avatar_url?: string;
+  repos_url?: string;
 }
