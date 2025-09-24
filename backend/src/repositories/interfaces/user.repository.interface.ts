@@ -8,4 +8,5 @@ export interface IUserRepository {
   softDelete(username: string): Promise<boolean>;
   findByUsername(username: string): Promise<IUserEntity | null>;
   findAll(filters?: any, sortBy?: string): Promise<IUserEntity[]>;
+  
 }

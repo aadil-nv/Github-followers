@@ -7,4 +7,7 @@ export interface IUserController {
   search(req: Request, res: Response, next: NextFunction): Promise<void>;
   getAll(req: Request, res: Response, next: NextFunction): Promise<void>;
   getUser(req: Request, res: Response, next: NextFunction): Promise<void>;
+
+   findMutualFriends(req: Request, res: Response, next: NextFunction): Promise<void>;
+  searchUsers(req: Request, res: Response, next: NextFunction): Promise<void>;
 }

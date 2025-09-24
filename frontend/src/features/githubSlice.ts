@@ -1,8 +1,22 @@
 import { createSlice } from "@reduxjs/toolkit";
 import type { PayloadAction } from "@reduxjs/toolkit";
 
-interface User { /* minimal type */ login: string; avatar_url: string; followers_url: string; following_url: string; repos_url: string; bio?: string; }
-interface Repo { id: number; name: string; description: string; stargazers_count: number; forks_count: number; }
+interface User {
+  login: string;
+  avatar_url: string;
+  followers_url: string;
+  following_url: string;
+  repos_url: string;
+  bio?: string;
+}
+
+interface Repo {
+  id: number;
+  name: string;
+  description: string;
+  stargazers_count: number;
+  forks_count: number;
+}
 
 interface GithubState {
   user: User | null;
@@ -10,7 +24,7 @@ interface GithubState {
   selectedRepo: Repo | null;
   followers: User[];
   following: User[];
-  historyStack: string[]; // track pages for back button
+  historyStack: string[];
 }
 
 const initialState: GithubState = {
@@ -50,6 +64,9 @@ const githubSlice = createSlice({
     popHistory(state) {
       state.historyStack.pop();
     },
+    clearAll() {
+      return { ...initialState }; // reset state properly
+    },
   },
 });
 
@@ -62,6 +79,7 @@ export const {
   setFollowing,
   pushHistory,
   popHistory,
+  clearAll, // ✅ added here
 } = githubSlice.actions;
 
 export default githubSlice.reducer;

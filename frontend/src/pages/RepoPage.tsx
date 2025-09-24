@@ -1,6 +1,10 @@
 import React, { useEffect, useState, useCallback } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import axios from "axios";
+import type { Follower, Repo, User } from "../features/types";
+import type { AppDispatch } from "../redux/store";
+import { useDispatch } from "react-redux";
+import { clearAll } from "../features/githubSlice";
 
 // Repository details interface from GitHub API
 interface GitHubRepo {
@@ -42,6 +46,7 @@ interface ReadmeContent {
   content: string;
   encoding: string;
 }
+const userCache = new Map<string, { user: User; repos: Repo[]; followers: Follower[]; timestamp: number }>();
 
 export default function ReposPage(): React.ReactElement {
   const { username, reponame } = useParams<{ username: string; reponame: string }>();
@@ -52,6 +57,9 @@ export default function ReposPage(): React.ReactElement {
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
   const [loadingReadme, setLoadingReadme] = useState<boolean>(false);
+    const dispatch = useDispatch<AppDispatch>();
+
+ 
 
   // Fetch repository details from GitHub API
   const fetchRepoDetails = useCallback(async (username: string, repoName: string): Promise<void> => {
@@ -132,6 +140,15 @@ export default function ReposPage(): React.ReactElement {
     });
   };
 
+  const handleHome = useCallback((): void => {
+      // Clear all Redux data
+      dispatch(clearAll());
+      // Clear in-memory cache
+      userCache.clear();
+      // Navigate to home
+      navigate('/');
+    }, [dispatch, navigate]);
+
   const formatFileSize = (bytes: number): string => {
     if (bytes === 0) return '0 KB';
     const k = 1024;
@@ -199,7 +216,27 @@ export default function ReposPage(): React.ReactElement {
         ← Back to {repo.owner.login}
       </button>
 
-      {/* Repository Header */}
+      <button
+          onClick={handleHome}
+          className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 transition-colors flex items-center gap-2"
+          type="button"
+        >
+          <svg 
+            className="w-4 h-4" 
+            fill="none" 
+            stroke="currentColor" 
+            viewBox="0 0 24 24"
+          >
+            <path 
+              strokeLinecap="round" 
+              strokeLinejoin="round" 
+              strokeWidth={2} 
+              d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" 
+            />
+          </svg>
+          Home
+        </button>
+
       <div className="bg-white rounded-lg shadow-md p-6 mb-6">
         <div className="flex items-center justify-between mb-4">
           <div className="flex items-center gap-4">
@@ -290,10 +327,8 @@ export default function ReposPage(): React.ReactElement {
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        {/* Left Column - Repository Info */}
         <div className="lg:col-span-1 space-y-6">
-          {/* Repository Details */}
-          <div className="bg-white rounded-lg shadow-md p-6">
+l          <div className="bg-white rounded-lg shadow-md p-6">
             <h2 className="text-xl font-semibold text-gray-900 mb-4">Repository Info</h2>
             
             <div className="space-y-3">

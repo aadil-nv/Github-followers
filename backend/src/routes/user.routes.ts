@@ -7,6 +7,7 @@ const controller = container.get<IUserController>('IUserController');
 
 
 userRouter.get('/search/:search', controller.search.bind(controller));
+
 userRouter.get('/name/:name', controller.getUser.bind(controller));
 
 userRouter.post('/', controller.saveUser.bind(controller));
@@ -15,7 +16,10 @@ userRouter.put('/:username', controller.update.bind(controller));
 
 userRouter.delete('/:username', controller.delete.bind(controller));
 
-
 userRouter.get('/', controller.getAll.bind(controller));
+
+userRouter.get('/mutual-friends/:username',controller.findMutualFriends.bind(controller));
+
+userRouter.get('/search-db',controller.searchUsers.bind(controller));
 
 export default userRouter;

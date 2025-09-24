@@ -1,15 +1,9 @@
 import UserSearch from "../components/SearchBar";
-// import UserInfo from "../components/UserInfo";
-// import RepoList from "../components/RepoList";
-// import RepoDetails from "../components/RepoDetails";
 
 export default function HomePage() {
   return (
-    <div className="container mx-auto">
+    <div className="flex items-center justify-center min-h-screen">
       <UserSearch />
-      {/* <UserInfo />
-      <RepoDetails />
-      <RepoList /> */}
     </div>
   );
 }

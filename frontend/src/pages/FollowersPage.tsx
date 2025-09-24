@@ -78,7 +78,6 @@ export default function FollowersPage(): React.ReactElement {
       }
       const data: FollowerResponse[] = await res.json();
       
-      // Convert FollowerResponse to User format for your slice
       const followersAsUsers: User[] = data.map((follower) => ({
         login: follower.login,
         avatar_url: follower.avatar_url,
@@ -103,14 +102,12 @@ export default function FollowersPage(): React.ReactElement {
 
   const handleFollowerClick = useCallback(async (follower: User): Promise<void> => {
     try {
-      // fetch user info
       const userRes = await fetch(`https://api.github.com/users/${follower.login}/folollowers`);
       if (!userRes.ok) {
         throw new Error(`HTTP error! status: ${userRes.status}`);
       }
       const userData: UserResponse = await userRes.json();
       
-      // Convert to User format for your slice
       const userForSlice: User = {
         login: userData.login,
         avatar_url: userData.avatar_url,
@@ -136,7 +133,6 @@ export default function FollowersPage(): React.ReactElement {
       const repos: Repo[] = await repoRes.json();
       dispatch(setRepos(repos));
       
-      // Navigate to the clicked user's page
       navigate(`/user/${follower.login}`);
     } catch (error) {
       console.error('Error fetching user data:', error);
@@ -145,7 +141,7 @@ export default function FollowersPage(): React.ReactElement {
 
   const handleBack = useCallback((): void => {
     dispatch(popHistory());
-    navigate(-1); // Go back in browser history
+    navigate(-1); 
   }, [dispatch, navigate]);
 
   if (!username) {

@@ -7,6 +7,9 @@ export interface IUserService {
   updateUser(username: string, dto: UpdateUserDTO): Promise<IUserEntity | null>;
   softDeleteUser(username: string): Promise<boolean>;
   getAllUsers(sortBy?: string): Promise<IUserEntity[]>;
-  searchUsers(filters: any): Promise<IUserEntity[]>;
+    searchUsers(filters: any, sortBy?: string): Promise<IUserEntity[]>;
+
   findByUsername(username: string): Promise<IUserEntity | null>;
+
+   findMutualFriends(username: string): Promise<string[]>; 
 }

@@ -7,9 +7,7 @@ import { IUserService } from '../services/interfaces/user.service.interface';
 export class UserController implements IUserController {
   constructor(@inject('IUserService') private service: IUserService) {}
 
-  async saveUser(req: Request, res: Response, next: NextFunction): Promise<void> {
-    console.log("save user is calling =========>",req.body);
-    
+  async saveUser(req: Request, res: Response, next: NextFunction): Promise<void> {    
   try {
     const dto = req.body; 
     const user = await this.service.saveUser(dto);
@@ -49,14 +47,10 @@ export class UserController implements IUserController {
   }
 
   async search(req: Request, res: Response, next: NextFunction): Promise<void> {
-    console.log("search is calling =========>",req.query);
     
     try {
       const filters = req.query;
-
       const users = await this.service.searchUsers(filters);
-      console.log("Users found:", users);
-      
       res.json(users);
     } catch (err) {
       next(err);
@@ -80,7 +74,7 @@ export class UserController implements IUserController {
       return;
     }
 
-    const user = await this.service.findByUsername(name); // new service method
+    const user = await this.service.findByUsername(name); 
     if (!user) {
       res.status(404).json({ message: 'User not found' });
       return;
@@ -91,5 +85,29 @@ export class UserController implements IUserController {
     next(err);
   }
 }
+
+async findMutualFriends(req: Request, res: Response, next: NextFunction): Promise<void> {
+  console.log("calling mutual friends==========>");
+  
+    try {
+      const username = req.params.username;
+      const mutual = await this.service.findMutualFriends(username);
+      res.json({ username, mutualFriends: mutual });
+    } catch (err) {
+      next(err);
+    }
+  }
+
+  async searchUsers(req: Request, res: Response, next: NextFunction): Promise<void> {
+    try {
+      const filters = req.query;
+      const sortBy = req.query.sortBy as string;
+      const users = await this.service.searchUsers(filters, sortBy);
+      res.json(users);
+    } catch (err) {
+      next(err);
+    }
+  }
+
 
 }

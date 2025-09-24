@@ -1,33 +1,3 @@
-export interface User {
-  login: string;
-  avatar_url: string;
-  name?: string;
-  location?: string;
-  bio?: string;
-  followers: number;
-  following: number;
-  public_repos: number;
-}
-
-export interface Repo {
-  id: number;
-  name: string;
-  description: string;
-  stargazers_count: number;
-  forks_count: number;
-  html_url: string;
-  language: string;
-}
-
-export interface Follower {
-  login: string;
-  avatar_url: string;
-}
-
-
-// Shared type definitions for the application
-
-// Backend API Response interface (what you actually get from your API)
 export interface BackendUser {
   id: string;
   username: string;
@@ -45,10 +15,8 @@ export interface BackendUser {
   isDeleted: boolean;
   createdAt: string;
   updatedAt: string;
-  
 }
 
-// Frontend User interface (what your component uses)
 export interface User {
   login: string;
   avatar_url: string;
@@ -58,13 +26,11 @@ export interface User {
   followers: number;
   following: number;
   public_repos: number;
-  repos?: Repo[];
   followers_url: string;
   following_url: string;
   repos_url: string;
 }
 
-// Repository interface
 export interface Repo {
   id: number;
   name: string;
@@ -75,29 +41,13 @@ export interface Repo {
   language: string;
 }
 
-// Follower interface
 export interface Follower {
   login: string;
   avatar_url: string;
-}
-
-export interface BackendUser {
-  id: string;
-  username: string;
-  location?: string;
-  blog?: string;
-  bio?: string;
-  avatar_url: string;
   followers_url: string;
   following_url: string;
-  repos_url: string | null;
-  public_repos: number;
-  public_gists: number;
-  followers: number;
-  following: number;
-  isDeleted: boolean;
-  createdAt: string;
-  updatedAt: string;
+  repos_url: string;
+  bio?: string;
 }
 
 export interface GitHubUser {
@@ -123,3 +73,23 @@ export interface GitHubUser {
 export interface LocationState {
   fromFollowerClick?: boolean;
 }
+export interface EditUserModalProps {
+  isOpen: boolean;
+  onClose: () => void;
+  user: User;
+  onUserUpdate: (updatedUser: User) => void;
+}
+
+export interface FormData {
+  name: string;
+  bio: string;
+  location: string;
+}
+
+export interface FormErrors {
+  name?: string;
+  bio?: string;
+  location?: string;
+  general?: string;
+}
+
