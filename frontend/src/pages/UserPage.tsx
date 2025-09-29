@@ -103,7 +103,7 @@ export default function UserPage(): React.ReactElement {
       setError(null);
 
       console.log('Fetching mutual friends for:', user.login);
-      const response = await axios.get(`${BACKEND_URL}/users/mutual-friends/${user.login}`);
+      const response = await axios.get(`${BACKEND_URL}/api/users/mutual-friends/${user.login}`);
       console.log('Raw mutual friends data:', response.data);
       
       const mutualFriendsData = response.data.mutual || [];
@@ -154,7 +154,7 @@ export default function UserPage(): React.ReactElement {
       }
       
       console.log('Fetching fresh data for:', name);
-      const userResponse = await axios.get<BackendUser>(`${BACKEND_URL}/users/name/${name}`);
+      const userResponse = await axios.get<BackendUser>(`${BACKEND_URL}/api/users/name/${name}`);
       const transformedUser = transformUserData(userResponse.data);
       
       setLocalUser(transformedUser);
@@ -259,7 +259,7 @@ export default function UserPage(): React.ReactElement {
       }))
     };
 
-    await axios.post(`${BACKEND_URL}/users`, userToSave);
+    await axios.post(`${BACKEND_URL}/api/users`, userToSave);
   };
 
   const handleUserUpdate = useCallback((updatedUser: User) => {
@@ -301,7 +301,7 @@ export default function UserPage(): React.ReactElement {
       }
 
       try {
-        const backendResponse = await axios.get(`${BACKEND_URL}/users/name/${followerLogin}`);
+        const backendResponse = await axios.get(`${BACKEND_URL}/api/users/name/${followerLogin}`);
         if (backendResponse.data) {
           navigate(`/user/${followerLogin}`, { state: { fromFollowerClick: true } });
           return;
@@ -374,7 +374,7 @@ export default function UserPage(): React.ReactElement {
       }
 
       try {
-        const backendResponse = await axios.get(`${BACKEND_URL}/users/name/${friendLogin}`);
+        const backendResponse = await axios.get(`${BACKEND_URL}/api/users/name/${friendLogin}`);
         if (backendResponse.data) {
           navigate(`/user/${friendLogin}`);
           return;

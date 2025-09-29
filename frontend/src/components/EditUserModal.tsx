@@ -101,7 +101,7 @@ const EditUserModal: React.FC<EditUserModalProps> = ({
       };
 
       const response = await axios.put(
-        `${BACKEND_URL}/users/${user.login}`,
+        `${BACKEND_URL}/api/users/${user.login}`,
         updateData,
         {
           headers: {
