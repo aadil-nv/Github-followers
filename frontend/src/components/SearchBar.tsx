@@ -31,7 +31,7 @@ export default function SearchBar() {
       console.log("Searching for user:", username);
 
       try {
-        const backendResponse = await axios.get(`${BACKEND_URL}/users/name/${username}`);
+        const backendResponse = await axios.get(`${BACKEND_URL}/api/users/name/${username}`);
         console.log("Backend response:", backendResponse.data);
         
         if (backendResponse.data) {
@@ -105,7 +105,7 @@ export default function SearchBar() {
       };
 
       try {
-        await axios.post(`${BACKEND_URL}/users`, userToSave);
+        await axios.post(`${BACKEND_URL}/api/users`, userToSave);
         console.log("💾 User saved to database successfully");
         setLastSearchSource('github');
       } catch (saveError) {

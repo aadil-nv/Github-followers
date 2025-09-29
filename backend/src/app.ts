@@ -44,9 +44,9 @@ export function createApp(): Application {
   // API Docs
 
   // Routes
-  app.use('/', rootRoute);
-  app.use('/health', healthRoute);
-  app.use('/users', userRoute);
+  app.use('/api/', rootRoute);
+  app.use('/api/health', healthRoute);
+  app.use('/api/users', userRoute);
 
 
 
