@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import { Github } from "lucide-react";
 import { setUser, setRepos } from "../features/githubSlice";
 import type { Repo } from "../features/types";
 
@@ -155,13 +156,16 @@ export default function SearchBar() {
     <div className="relative">
       <div className="flex gap-2 my-4">
         <div className="relative flex-grow">
+          <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+            <Github className="h-5 w-5 text-gray-400" />
+          </div>
           <input
             type="text"
             value={username}
             onChange={handleInputChange}
             onKeyDown={handleKeyPress}
             placeholder="Enter GitHub username"
-            className="border px-3 py-2 w-full rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+            className="border px-3 py-2 pl-10 w-full rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
             disabled={isLoading}
           />
         </div>
