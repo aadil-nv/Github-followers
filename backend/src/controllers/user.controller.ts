@@ -7,7 +7,11 @@ import { IUserService } from '../services/interfaces/user.service.interface';
 export class UserController implements IUserController {
   constructor(@inject('IUserService') private service: IUserService) {}
 
-  async saveUser(req: Request, res: Response, next: NextFunction): Promise<void> {    
+  async saveUser(req: Request, res: Response, next: NextFunction): Promise<void> {  
+    console.log("saving user...............................");
+     
+    console.log("Request body:", req.body);
+     
   try {
     const dto = req.body; 
     const user = await this.service.saveUser(dto);
@@ -61,6 +65,8 @@ export class UserController implements IUserController {
     try {
       const sortBy = req.query.sortBy as string;
       const users = await this.service.getAllUsers(sortBy);
+      console.log("Retrieved users:", users);
+      
       res.json(users);
     } catch (err) {
       next(err);
