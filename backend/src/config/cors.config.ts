@@ -1,16 +1,11 @@
-import cors from "cors";
+import cors, { CorsOptions } from "cors";
 import { config } from "./env";
 
-export const corsOptions: cors.CorsOptions = {
-  origin: (origin, callback) => {
-    // allow requests with no origin (like Postman) or matching the single allowed origin
-    if (!origin || origin === config.CORS_ORIGINS) {
-      callback(null, true);
-    } else {
-      callback(new Error("Not allowed by CORS"));
-    }
-  },
+
+export const corsOptions: CorsOptions = {
+  origin: config.CORS_ORIGINS, // Default to localhost if not set
+  methods: "GET,POST,PUT,DELETE,PATCH",
+  allowedHeaders: "Content-Type,Authorization",
   credentials: true,
-  methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"], // allow preflight
-  allowedHeaders: ["Content-Type", "Authorization"], // headers your frontend sends
 };
+
