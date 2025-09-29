@@ -87,7 +87,7 @@ export default function UserPage(): React.ReactElement {
 
   const fetchRepositories = useCallback(async (name: string): Promise<Repo[]> => {
     try {
-      const response = await axios.get<Repo[]>(`https://api.github.com/users/${name}/repos`);
+      const response = await axios.get<Repo[]>(`${GITHUB_API_URL}/users/${name}/repos`);
       return response.data || [];
     } catch (err) {
       console.error('Error fetching repositories:', err);
