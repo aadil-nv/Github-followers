@@ -22,7 +22,7 @@ export interface EnvConfig {
   DB_USERNAME?: string;
   DB_PASSWORD?: string;
   DB_LOGGING?: boolean;
-  CORS_ORIGINS: string[]; 
+  CORS_ORIGINS: string; 
 }
 
 function parseNumber(value: string | undefined, name: string): number {
@@ -96,7 +96,7 @@ function getEnv(): EnvConfig {
     DB_USERNAME,
     DB_PASSWORD,
     DB_LOGGING: DB_LOGGING.toLowerCase() === 'true',
-    CORS_ORIGINS: CORS_ORIGINS.split(',').map(origin => origin.trim())
+    CORS_ORIGINS
   };
 }
 
