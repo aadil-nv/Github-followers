@@ -5,6 +5,9 @@ import axios from "axios";
 import { setUser, setRepos } from "../features/githubSlice";
 import type { Repo } from "../features/types";
 
+
+const BACKEND_URL = import.meta.env.VITE_BACKEND_URL
+const GITHUB_API_URL = import.meta.env.VITE_GITHUB_API_URL
 export default function SearchBar() {
   const [username, setUsername] = useState("");
   const [isLoading, setIsLoading] = useState(false);
@@ -28,7 +31,7 @@ export default function SearchBar() {
       console.log("Searching for user:", username);
 
       try {
-        const backendResponse = await axios.get(`http://localhost:5000/users/name/${username}`);
+        const backendResponse = await axios.get(`${BACKEND_URL}/users/name/${username}`);
         console.log("Backend response:", backendResponse.data);
         
         if (backendResponse.data) {
@@ -59,7 +62,7 @@ export default function SearchBar() {
       }
 
       console.log("🔍 Fetching user from GitHub API...");
-      const githubUserResponse = await axios.get(`https://api.github.com/users/${username}`);
+      const githubUserResponse = await axios.get(`${GITHUB_API_URL}/users/${username}`);
       const githubUserData = githubUserResponse.data;
       
       let reposData = [];
@@ -102,7 +105,7 @@ export default function SearchBar() {
       };
 
       try {
-        await axios.post('http://localhost:5000/users', userToSave);
+        await axios.post(`${BACKEND_URL}/users`, userToSave);
         console.log("💾 User saved to database successfully");
         setLastSearchSource('github');
       } catch (saveError) {

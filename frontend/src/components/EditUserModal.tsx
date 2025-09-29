@@ -4,7 +4,7 @@ import type { EditUserModalProps, FormData, FormErrors, User } from '../features
 
 
 
-
+const BACKEND_URL = import.meta.env.VITE_BACKEND_URL
 
 const EditUserModal: React.FC<EditUserModalProps> = ({
   isOpen,
@@ -101,7 +101,7 @@ const EditUserModal: React.FC<EditUserModalProps> = ({
       };
 
       const response = await axios.put(
-        `http://localhost:5000/users/${user.login}`,
+        `${BACKEND_URL}/users/${user.login}`,
         updateData,
         {
           headers: {
