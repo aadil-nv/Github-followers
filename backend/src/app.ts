@@ -3,9 +3,7 @@ import helmet from 'helmet';
 import cors from 'cors';
 import morgan from 'morgan';
 import rateLimit from 'express-rate-limit';
-import swaggerUi from 'swagger-ui-express';
-import YAML from 'yamljs';
-import path from 'path';
+
 import 'colors';
 import { config } from './config/env';
 import { errorHandler, notFoundHandler } from './middlewares/error.middleware';
@@ -16,7 +14,6 @@ import { HttpStatusCode } from './constants/http-status-code.enum';
 import responseTimeLogger from "./middlewares/responseTime.logger";
 
 
-const swaggerDocument = YAML.load(path.resolve(process.cwd(), 'docs/openapi.yaml'));
 
 export function createApp(): Application {
   const app: Application = express();
@@ -43,7 +40,6 @@ export function createApp(): Application {
   app.use(limiter);
 
   // API Docs
-  app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument, { explorer: true }));
 
   // Routes
   app.use('/', rootRoute);
