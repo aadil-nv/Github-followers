@@ -14,7 +14,7 @@ async function start(): Promise<void> {
 
     const server = app.listen(Number(config.PORT), () => {
       const address = server.address() as AddressInfo;
-      logger.info(`Server listening on port ${address.port}`);
+      logger.info(`Server listening on port ${config.PORT}`);
     });
   } catch (err: unknown) {
     if (err instanceof Error) {
