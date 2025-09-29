@@ -16,7 +16,7 @@ import { HttpStatusCode } from './constants/http-status-code.enum';
 import responseTimeLogger from "./middlewares/responseTime.logger";
 
 
-const swaggerDocument = YAML.load(path.join(__dirname, '../docs/openapi.yaml'));
+const swaggerDocument = YAML.load(path.resolve(process.cwd(), 'docs/openapi.yaml'));
 
 export function createApp(): Application {
   const app: Application = express();
