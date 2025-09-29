@@ -1,7 +1,10 @@
 # GitHub Backend Assignment
 
-A backend service built with **Node.js**, **Express**, and **TypeScript** following the **Repository Pattern**.  
-This app integrates with the GitHub API and provides APIs for saving users, finding friends (mutual followers), searching, updating, deleting, and sorting user data.  
+# Host Lik :https://github-followers-nu.vercel.app/
+# Github Link : https://github.com/aadil-nv/Github-followers
+
+A full-stack project with a **Node.js + Express + TypeScript backend** and a **Vite + React frontend**.  
+The backend integrates with the GitHub API to fetch, store, and manage user details, while the frontend provides a simple UI to search and explore GitHub followers.  
 
 ---
 
@@ -19,12 +22,25 @@ This app integrates with the GitHub API and provides APIs for saving users, find
 ---
 
 ## 🛠️ Tech Stack
-- **Node.js** + **Express**  
-- **TypeScript**  
-- **TypeORM / SQLite** (or your chosen DB)  
-- **Axios** (for GitHub API calls)  
-- **Jest** + **Supertest** (testing)  
+- **Backend**: Node.js, Express, TypeScript, TypeORM, Axios  
+- **Frontend**: Vite, React, Tailwind CSS  
+- **Database**: SQLite / PostgreSQL  
+- **Testing**: Jest, Supertest  
 
 ---
 
-## 📂 Project Structure
+## ▶️ Getting Started
+
+### 🔹 Backend
+```bash
+cd backend
+npm install
+npm start
+
+
+### 🔹 frontend
+
+cd frontend
+npm install
+npm run dev
+
