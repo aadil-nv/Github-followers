@@ -12,6 +12,7 @@ import healthRoute from './routes/health.route';
 import userRoute from './routes/user.routes';
 import { HttpStatusCode } from './constants/http-status-code.enum';
 import responseTimeLogger from "./middlewares/responseTime.logger";
+import { corsOptions } from "./config/cors.config";
 
 
 
@@ -19,7 +20,7 @@ export function createApp(): Application {
   const app: Application = express();
 
   app.use(helmet());
-  app.use(cors());
+  app.use(cors(corsOptions));
 
   app.use(express.json({ limit: '1mb' }));
   app.use(express.urlencoded({ extended: true }));

@@ -22,7 +22,7 @@ export interface EnvConfig {
   DB_USERNAME?: string;
   DB_PASSWORD?: string;
   DB_LOGGING?: boolean;
-
+  CORS_ORIGINS: string[]; 
 }
 
 function parseNumber(value: string | undefined, name: string): number {
@@ -51,7 +51,8 @@ function getEnv(): EnvConfig {
     DB_NAME,
     DB_USERNAME,
     DB_PASSWORD,
-    DB_LOGGING
+    DB_LOGGING,
+    CORS_ORIGINS,
   } = process.env;
 
   if (!NODE_ENV) throw new Error('NODE_ENV is required');
@@ -72,6 +73,7 @@ function getEnv(): EnvConfig {
   if (!DB_USERNAME) throw new Error('DB_USERNAME is required');
   if (!DB_PASSWORD) throw new Error('DB_PASSWORD is required');
   if (!DB_LOGGING) throw new Error('DB_LOGGING is required');
+  if (!CORS_ORIGINS) throw new Error('CORS_ORIGINS is required');
 
 
 
@@ -93,8 +95,8 @@ function getEnv(): EnvConfig {
     DB_NAME,
     DB_USERNAME,
     DB_PASSWORD,
-    DB_LOGGING: DB_LOGGING.toLowerCase() === 'true'
-
+    DB_LOGGING: DB_LOGGING.toLowerCase() === 'true',
+    CORS_ORIGINS: CORS_ORIGINS.split(',').map(origin => origin.trim())
   };
 }
 
